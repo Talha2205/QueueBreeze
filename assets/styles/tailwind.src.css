@@ -1,0 +1,458 @@
+@import "tailwindcss";
+
+@source "../../templates";
+@source "../../src/Twig";
+
+@theme {
+    --color-brand-50: #f0fdfa;
+    --color-brand-100: #ccfbf1;
+    --color-brand-500: #14b8a6;
+    --color-brand-600: #0d9488;
+    --color-brand-700: #0f766e;
+    --color-brand-900: #134e4a;
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+    body {
+        @apply bg-white text-slate-900 antialiased;
+    }
+}
+
+@layer components {
+    .site-header {
+        @apply border-b border-slate-200 bg-white;
+    }
+
+    .site-header-inner {
+        @apply mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4;
+    }
+
+    .site-brand {
+        @apply text-xl font-bold text-brand-700;
+    }
+
+    .site-main {
+        @apply mx-auto w-full max-w-6xl px-4 py-8;
+    }
+
+    .patient-page {
+        @apply text-[18px] leading-relaxed;
+    }
+
+    .staff-page {
+        @apply text-sm;
+    }
+
+    .staff-nav {
+        @apply flex flex-wrap items-center gap-2;
+    }
+
+    .nav-link {
+        @apply rounded-md px-3 py-2 font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-900;
+    }
+
+    .page-title {
+        @apply mb-6 text-3xl font-bold text-slate-900;
+    }
+
+    .section-title {
+        @apply mb-3 text-xl font-semibold text-slate-900;
+    }
+
+    .card {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .btn-small {
+        @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-100;
+    }
+
+    .btn-primary {
+        @apply min-h-12 bg-brand-600 px-6 py-3 text-white hover:bg-brand-700;
+    }
+
+    .btn-secondary {
+        @apply min-h-12 border border-slate-300 bg-white px-6 py-3 text-slate-800 hover:bg-slate-50;
+    }
+
+    .btn-danger {
+        @apply min-h-12 bg-rose-600 px-6 py-3 text-white hover:bg-rose-700;
+    }
+
+    .btn-small {
+        @apply min-h-9 px-3 py-1.5 text-sm;
+    }
+
+    .btn-block {
+        @apply w-full;
+    }
+
+    .btn-small.btn-secondary {
+        @apply min-h-9;
+    }
+
+    .field {
+        @apply mb-5 flex flex-col gap-1.5;
+    }
+
+    .field-label {
+        @apply font-semibold text-slate-800;
+    }
+
+    .field-input {
+        @apply min-h-12 rounded-xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 focus:border-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-100;
+    }
+
+    .field-help {
+        @apply text-sm text-slate-600;
+    }
+
+    .field-error {
+        @apply text-sm font-medium text-rose-700;
+    }
+
+    .phone-input-group {
+        @apply flex items-stretch;
+    }
+
+    .phone-prefix {
+        @apply inline-flex items-center rounded-l-xl border border-r-0 border-slate-300 bg-slate-100 px-4 font-semibold text-slate-700;
+    }
+
+    .phone-input-group .field-input {
+        @apply flex-1 rounded-l-none;
+    }
+
+    .channel-toggle {
+        @apply grid grid-cols-2 gap-3;
+    }
+
+    .channel-option {
+        @apply flex min-h-14 cursor-pointer items-center justify-center rounded-xl border-2 border-slate-300 px-4 py-3 font-semibold text-slate-800 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-900;
+    }
+
+    .channel-option input {
+        @apply sr-only;
+    }
+
+    .honeypot-field {
+        @apply absolute -left-[9999px] h-0 w-0 overflow-hidden;
+    }
+
+    .flash {
+        @apply mb-6 rounded-xl border px-4 py-3 font-medium;
+    }
+
+    .flash-success {
+        @apply border-emerald-300 bg-emerald-50 text-emerald-900;
+    }
+
+    .flash-error {
+        @apply border-rose-300 bg-rose-50 text-rose-900;
+    }
+
+    .flash-info {
+        @apply border-blue-300 bg-blue-50 text-blue-900;
+    }
+
+    .hero-section {
+        @apply flex flex-col gap-6 py-6 text-center;
+    }
+
+    .hero-title {
+        @apply text-4xl font-bold text-brand-900 md:text-5xl;
+    }
+
+    .hero-subtitle {
+        @apply text-xl text-slate-700;
+    }
+
+    .steps-list {
+        @apply grid gap-4 md:grid-cols-3;
+    }
+
+    .step-item {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col items-center gap-2 text-center;
+    }
+
+    .step-number {
+        @apply flex h-12 w-12 items-center justify-center rounded-full bg-brand-100 text-xl font-bold text-brand-900;
+    }
+
+    .doctor-card-grid {
+        @apply grid gap-4 md:grid-cols-2 xl:grid-cols-3;
+    }
+
+    .doctor-option {
+        @apply flex cursor-pointer flex-col gap-3 rounded-2xl border-2 border-slate-200 bg-white p-5 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50;
+    }
+
+    .doctor-option input {
+        @apply sr-only;
+    }
+
+    .doctor-option-name {
+        @apply text-xl font-semibold text-slate-900;
+    }
+
+    .doctor-option-meta {
+        @apply text-base text-slate-700;
+    }
+
+    .doctor-option.is-unavailable {
+        @apply cursor-not-allowed opacity-60;
+    }
+
+    .doctor-card {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col gap-4;
+    }
+
+    .doctor-card-header {
+        @apply flex items-start justify-between gap-3;
+    }
+
+    .doctor-card-name {
+        @apply text-lg font-semibold text-slate-900;
+    }
+
+    .doctor-card-specialty {
+        @apply text-sm text-slate-600;
+    }
+
+    .doctor-card-prefix {
+        @apply flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-900;
+    }
+
+    .doctor-card-stats {
+        @apply grid grid-cols-3 gap-2 text-center;
+    }
+
+    .doctor-card-stats dt {
+        @apply text-xs uppercase tracking-wide text-slate-600;
+    }
+
+    .doctor-card-stats dd {
+        @apply text-lg font-semibold text-slate-900;
+    }
+
+    .doctor-card-closed {
+        @apply opacity-70;
+    }
+
+    .doctor-card-actions {
+        @apply flex flex-wrap items-center justify-between gap-2;
+    }
+
+    .status-badge {
+        @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset;
+    }
+
+    .token-card {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col items-center gap-2 text-center;
+    }
+
+    .token-card-label {
+        @apply text-base font-medium text-slate-600;
+    }
+
+    .token-number {
+        @apply font-mono text-[64px] font-bold leading-none tracking-wider text-brand-900 sm:text-[80px];
+    }
+
+    .token-card-doctor {
+        @apply text-lg text-slate-700;
+    }
+
+    .live-status-panel {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col gap-6;
+    }
+
+    .now-serving {
+        @apply flex flex-col items-center gap-1 rounded-xl bg-brand-50 p-4 text-center;
+    }
+
+    .now-serving-label {
+        @apply text-base font-medium text-slate-700;
+    }
+
+    .now-serving-token {
+        @apply font-mono text-5xl font-bold text-brand-900;
+    }
+
+    .position-text {
+        @apply text-2xl font-semibold text-slate-900;
+    }
+
+    .position-highlight {
+        @apply text-4xl font-bold text-brand-700;
+    }
+
+    .called-banner {
+        @apply flex flex-col items-center gap-1 rounded-2xl bg-blue-600 px-6 py-6 text-center text-xl font-bold text-white shadow-lg;
+    }
+
+    .progress-steps {
+        @apply grid grid-cols-4 gap-2 text-center text-sm;
+    }
+
+    .progress-step {
+        @apply rounded-lg bg-slate-100 px-2 py-3 font-medium text-slate-600;
+    }
+
+    .progress-step.is-reached {
+        @apply bg-brand-100 font-semibold text-brand-900;
+    }
+
+    .progress-step.is-current {
+        @apply bg-brand-600 font-bold text-white;
+    }
+
+    .save-link-note {
+        @apply rounded-xl bg-amber-50 px-4 py-3 text-base text-amber-900;
+    }
+
+    .qr-panel {
+        @apply flex flex-col items-center gap-3;
+    }
+
+    .qr-image {
+        @apply h-56 w-56 rounded-xl border border-slate-200 bg-white p-2;
+    }
+
+    .stat-grid {
+        @apply grid grid-cols-2 gap-4 md:grid-cols-4;
+    }
+
+    .stat-card {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col gap-1;
+    }
+
+    .stat-card-label {
+        @apply text-sm font-medium text-slate-600;
+    }
+
+    .stat-card-value {
+        @apply text-3xl font-bold text-slate-900;
+    }
+
+    .stat-card-hint {
+        @apply text-xs text-slate-500;
+    }
+
+    .data-table-wrapper {
+        @apply overflow-x-auto rounded-2xl border border-slate-200 bg-white;
+    }
+
+    .data-table {
+        @apply min-w-full divide-y divide-slate-200 text-left;
+    }
+
+    .data-table th {
+        @apply bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600;
+    }
+
+    .data-table td {
+        @apply px-4 py-3 align-middle text-slate-800;
+    }
+
+    .row-actions {
+        @apply flex flex-wrap items-center gap-2;
+    }
+
+    .inline-form {
+        @apply inline;
+    }
+
+    .queue-toolbar {
+        @apply mb-6 flex flex-wrap items-center gap-3;
+    }
+
+    .queue-toolbar .call-next-button {
+        @apply min-h-14 px-8 text-lg;
+    }
+
+    .priority-badge {
+        @apply rounded-full bg-rose-600 px-2 py-0.5 text-xs font-bold uppercase text-white;
+    }
+
+    .muted-text {
+        @apply text-sm text-slate-600;
+    }
+
+    .modal-dialog {
+        @apply m-auto w-full max-w-lg rounded-2xl border border-slate-200 p-0 shadow-2xl backdrop:bg-slate-900/40;
+    }
+
+    .modal-body {
+        @apply flex flex-col gap-2 p-6;
+    }
+
+    .modal-footer {
+        @apply flex justify-end gap-3 border-t border-slate-200 px-6 py-4;
+    }
+
+    .scanner-frame {
+        @apply mx-auto w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-slate-900;
+    }
+
+    .check-in-result {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm flex flex-col gap-4;
+    }
+
+    .admin-tabs {
+        @apply mb-6 flex flex-wrap gap-2 border-b border-slate-200 pb-2;
+    }
+
+    .report-filter {
+        @apply mb-6 flex flex-wrap items-end gap-3;
+    }
+
+    .token-slip {
+        @apply mx-auto flex w-80 flex-col items-center gap-2 border-2 border-dashed border-slate-800 bg-white p-6 text-center text-slate-900;
+    }
+
+    .token-slip-token {
+        @apply font-mono text-6xl font-bold;
+    }
+
+    .staff-section {
+        @apply mb-8;
+    }
+
+    .staff-cards-grid {
+        @apply grid gap-4 md:grid-cols-2 xl:grid-cols-3;
+    }
+
+    .auth-card {
+        @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm mx-auto w-full max-w-md;
+    }
+
+    .staff-login-page {
+        @apply flex min-h-[70vh] items-center justify-center;
+    }
+
+    .home-inline-actions {
+        @apply flex flex-wrap items-center justify-center gap-3;
+    }
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .site-header,
+    .site-footer {
+        display: none !important;
+    }
+
+    .token-slip {
+        border: 2px dashed #000;
+        width: 80mm;
+        margin: 0;
+    }
+}

@@ -1,0 +1,16 @@
+parameters:
+    app.timezone: '%env(APP_TIMEZONE)%'
+    app.default_uri: '%env(DEFAULT_URI)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Entity/'
+            - '../src/Enum/'
+            - '../src/Message/'

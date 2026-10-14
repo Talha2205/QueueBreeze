@@ -1,0 +1,10 @@
+framework:
+    rate_limiter:
+        join_queue:
+            policy: sliding_window
+            limit: 5
+            interval: '10 minutes'
+        staff_login:
+            policy: sliding_window
+            limit: 10
+            interval: '5 minutes'

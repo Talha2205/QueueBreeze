@@ -1,0 +1,23 @@
+<article class="doctor-card" id="doctor-card-{{ this.summary.doctor.id }}">
+    <header class="doctor-card-header">
+        <div>
+            <h2 class="doctor-card-name">{{ this.summary.doctor.name }}</h2>
+            <p class="doctor-card-specialty">{{ this.summary.doctor.specialty }}</p>
+        </div>
+        <span class="doctor-card-prefix">{{ this.summary.doctor.tokenPrefix }}</span>
+    </header>
+    <dl class="doctor-card-stats">
+        <div>
+            <dt>Now serving</dt>
+            <dd>{{ this.summary.nowServing ?? '—' }}</dd>
+        </div>
+        <div>
+            <dt>Waiting</dt>
+            <dd>{{ this.summary.waitingCount }}</dd>
+        </div>
+        <div>
+            <dt>Est. wait</dt>
+            <dd>{{ this.summary.waitText }}</dd>
+        </div>
+    </dl>
+</article>

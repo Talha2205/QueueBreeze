@@ -1,0 +1,5 @@
+framework:
+    notifier:
+        texter_transports:
+            twilio: '%env(TWILIO_DSN)%'
+            log: 'log://default'
