@@ -32,7 +32,7 @@ final class ReceptionistType extends AbstractType
                 'required' => $options['password_required'],
                 'constraints' => array_filter([
                     $options['password_required'] ? new Assert\NotBlank(message: 'Please set a password.') : null,
-                    new Assert\Length(min: 10, minMessage: 'Use at least {{ limit }} characters.', allowEmptyString: true),
+                    new Assert\Length(min: 10, minMessage: 'Use at least {{ limit }} characters.'),
                 ]),
             ]);
     }

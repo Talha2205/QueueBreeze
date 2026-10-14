@@ -116,7 +116,7 @@ final class QueueController extends AbstractController
 
         $dto = new PriorityReasonRequest();
         $form = $this->createFormBuilder($dto)
-            ->add('priorityReason', TextType::class, ['label' => 'Reason for priority (staff only)'])
+            ->add('priorityReason', TextType::class, ['label' => 'Reason for priority (staff only)', 'empty_data' => ''])
             ->getForm();
         $form->handleRequest($request);
 

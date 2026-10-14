@@ -26,7 +26,9 @@
                 <span class="position-highlight">{{ status.ahead }}</span> {{ status.ahead == 1 ? 'person' : 'people' }} ahead of you
             {% endif %}
         </p>
-        <p class="text-center text-slate-700">Estimated wait: <strong>{{ status.waitText }}</strong></p>
+        {% if status.ahead > 0 %}
+            <p class="text-center text-slate-700">Estimated wait: <strong>{{ status.waitText }}</strong></p>
+        {% endif %}
     {% elseif s.value == 'IN_PROGRESS' %}
         <p class="position-text text-center">You are with the doctor.</p>
     {% elseif s.value == 'COMPLETED' %}

@@ -15,8 +15,8 @@ final class StaffEntryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Patient name'])
-            ->add('phone', TextType::class, ['label' => 'Mobile number (optional)', 'required' => false, 'attr' => ['placeholder' => '3001234567']])
+            ->add('name', TextType::class, ['label' => 'Patient name', 'empty_data' => ''])
+            ->add('phone', TextType::class, ['label' => 'Mobile number (optional)', 'required' => false, 'empty_data' => '', 'attr' => ['placeholder' => '3001234567']])
             ->add('channel', EnumType::class, [
                 'class' => NotificationChannel::class,
                 'expanded' => true,
@@ -26,7 +26,7 @@ final class StaffEntryType extends AbstractType
             ]);
 
         if ($options['with_priority_reason']) {
-            $builder->add('priorityReason', TextType::class, ['label' => 'Reason for priority (staff only)']);
+            $builder->add('priorityReason', TextType::class, ['label' => 'Reason for priority (staff only)', 'empty_data' => '']);
         }
     }
 

@@ -8,3 +8,12 @@ framework:
             policy: sliding_window
             limit: 10
             interval: '5 minutes'
+
+# Local testing submits many tokens from 127.0.0.1; keep the strict limit for prod.
+when@dev:
+    framework:
+        rate_limiter:
+            join_queue:
+                policy: sliding_window
+                limit: 500
+                interval: '10 minutes'

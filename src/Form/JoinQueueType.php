@@ -17,15 +17,15 @@ final class JoinQueueType extends AbstractType
     {
         $builder
             ->add('doctorId', HiddenType::class)
-            ->add('name', TextType::class, ['label' => 'Full name'])
-            ->add('phone', TextType::class, ['label' => 'Mobile number', 'attr' => ['inputmode' => 'tel', 'autocomplete' => 'tel-national', 'placeholder' => '3001234567']])
+            ->add('name', TextType::class, ['label' => 'Full name', 'empty_data' => ''])
+            ->add('phone', TextType::class, ['label' => 'Mobile number', 'empty_data' => '', 'attr' => ['inputmode' => 'tel', 'autocomplete' => 'tel-national', 'placeholder' => '3001234567']])
             ->add('channel', EnumType::class, [
                 'class' => NotificationChannel::class,
                 'expanded' => true,
                 'label' => 'Send updates via',
                 'choice_label' => static fn (NotificationChannel $channel): string => 'WhatsApp' === $channel->name ? 'WhatsApp' : 'SMS',
             ])
-            ->add('website', TextType::class, ['required' => false, 'label' => false, 'attr' => ['tabindex' => '-1', 'autocomplete' => 'off', 'class' => 'honeypot-field']]);
+            ->add('website', TextType::class, ['required' => false, 'empty_data' => '', 'label' => false, 'attr' => ['tabindex' => '-1', 'autocomplete' => 'off', 'class' => 'honeypot-field']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
