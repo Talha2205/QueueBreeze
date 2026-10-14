@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reports{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% macro minutes(value) %}{{ value is null ? '—' : value ~ ' min' }}{% endmacro %}
+
+{% block body %}
+    {% import _self as fmt %}
+    <h1 class="page-title">Admin</h1>
+    {{ include('staff/admin/_tabs.html.twig') }}
+
+    <form method="get" class="report-filter">
+        <div class="field mb-0">
+            <label class="field-label" for="date">Date</label>
+            <input class="field-input" type="date" id="date" name="date" value="{{ date|date('Y-m-d') }}">
+        </div>
+        <button type="submit" class="btn-secondary">Show</button>
+    </form>
+
+    <div class="stat-grid mb-8">
+        <twig:StatCard label="Total tokens" :value="summary.total" />
+        <twig:StatCard label="Served" :value="summary.served" />
+        <twig:StatCard label="Avg. wait" value="{{ fmt.minutes(summary.avgWaitMinutes) }}" hint="Joined → consultation start" />
+        <twig:StatCard label="Avg. consultation" value="{{ fmt.minutes(summary.avgConsultationMinutes) }}" />
+        <twig:StatCard label="Online" :value="summary.online" />
+        <twig:StatCard label="Walk-ins" :value="summary.walkIns" />
+        <twig:StatCard label="Priority" :value="summary.priority" />
+        <twig:StatCard label="Skipped / cancelled" value="{{ summary.skipped }} / {{ summary.cancelled }}" />
+    </div>
+
+    <h2 class="section-title">By doctor</h2>
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead><tr><th>Doctor</th><th>Total</th><th>Served</th><th>Online</th><th>Walk-ins</th><th>Avg. wait</th><th>Avg. consult</th></tr></thead>
+            <tbody class="divide-y divide-slate-100">
+                {% for row in byDoctor %}
+                    <tr>
+                        <td class="font-semibold">{{ row.doctor.name }}</td>
+                        <td>{{ row.summary.total }}</td>
+                        <td>{{ row.summary.served }}</td>
+                        <td>{{ row.summary.online }}</td>
+                        <td>{{ row.summary.walkIns }}</td>
+                        <td>{{ fmt.minutes(row.summary.avgWaitMinutes) }}</td>
+                        <td>{{ fmt.minutes(row.summary.avgConsultationMinutes) }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7" class="py-8 text-center muted-text">No tokens on this date.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Clinic settings{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Admin</h1>
+    {{ include('staff/admin/_tabs.html.twig') }}
+    <div class="mx-auto max-w-xl">
+        <div class="card">
+            {{ form_start(form) }}
+                {{ form_rest(form) }}
+                <button type="submit" class="btn-primary">Save settings</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

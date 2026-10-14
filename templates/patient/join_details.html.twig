@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your details{% endblock %}
+
+{% block body %}
+    <div class="mx-auto max-w-xl">
+        <a class="nav-link -ml-3 mb-4 inline-block" href="{{ path('join') }}">← Choose a different doctor</a>
+        <h1 class="page-title">Your details</h1>
+        {% if doctor %}
+            <p class="mb-6 text-slate-700">Token with <strong>{{ doctor.name }}</strong>{% if doctor.specialty %} · {{ doctor.specialty }}{% endif %}</p>
+        {% endif %}
+
+        <div class="card">
+            {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+                {{ form_errors(form) }}
+                {{ form_widget(form.doctorId) }}
+                {{ form_row(form.name, {attr: {autocomplete: 'name'}}) }}
+
+                <div class="field">
+                    {{ form_label(form.phone) }}
+                    <div class="phone-input-group">
+                        <span class="phone-prefix">+92</span>
+                        {{ form_widget(form.phone) }}
+                    </div>
+                    {{ form_errors(form.phone) }}
+                </div>
+
+                {{ form_row(form.channel) }}
+                {{ form_widget(form.website) }}
+
+                <button type="submit" class="btn-primary btn-block">Get my token</button>
+            {{ form_end(form) }}
+        </div>
+        <p class="muted-text mt-4">We only use your number to send queue updates for this visit.</p>
+    </div>
+{% endblock %}

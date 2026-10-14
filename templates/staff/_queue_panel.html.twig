@@ -1,0 +1,74 @@
+{# Live part of a doctor's queue. Re-rendered on every queue change (Mercure or polling). #}
+<div id="doctor-queue" class="flex flex-col gap-6">
+    <div class="stat-grid">
+        <twig:StatCard label="Now serving" value="{{ summary.nowServing ?? '—' }}" />
+        <twig:StatCard label="Waiting" :value="summary.waitingCount" />
+        <twig:StatCard label="Est. wait for a new token" value="{{ summary.waitText }}" />
+        <twig:StatCard label="Online tokens" value="{{ doctor.availableToday ? 'Open' : 'Paused' }}" />
+    </div>
+
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Token</th>
+                    <th>Patient</th>
+                    <th>Status</th>
+                    <th>Source</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                {% for row in rows %}
+                    {% set e = row.entry %}
+                    {% set st = e.status.value %}
+                    <tr class="{{ st in ['COMPLETED', 'CANCELLED'] ? 'opacity-60' }}">
+                        <td>{{ row.position ?? '' }}</td>
+                        <td class="font-mono text-base font-bold">{{ e.tokenNumber }}</td>
+                        <td>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-semibold">{{ e.patientName }}</span>
+                                {% if e.priority %}<span class="priority-badge" title="{{ e.priorityReason }}">Priority</span>{% endif %}
+                                {% if e.checkedIn %}<span class="text-xs font-semibold text-emerald-700">✓ checked in</span>{% endif %}
+                            </div>
+                            {% if e.patientPhone %}<div class="muted-text">{{ e.patientPhone|format_phone }}</div>{% endif %}
+                        </td>
+                        <td><twig:StatusBadge :status="e.status" /></td>
+                        <td>{{ e.source.value == 'WALK_IN' ? 'Walk-in' : 'Online' }}</td>
+                        <td>{{ e.joinedAt|date('H:i', app_timezone) }}</td>
+                        <td>
+                            <div class="row-actions">
+                                {% set actions = {
+                                    WAITING: [['call', 'Call', 'btn-primary'], ['skip', 'Skip', 'btn-secondary'], ['cancel', 'Cancel', 'btn-secondary']],
+                                    CALLED: [['start', 'Start', 'btn-primary'], ['skip', 'No-show', 'btn-secondary'], ['cancel', 'Cancel', 'btn-secondary']],
+                                    IN_PROGRESS: [['complete', 'Complete', 'btn-primary']],
+                                    SKIPPED: [['recall', 'Recall', 'btn-secondary']],
+                                }[st] ?? [] %}
+                                {% for a in actions %}
+                                    <form method="post" action="{{ path('staff_entry_action', {id: e.id, action: a[0]}) }}" class="inline-form">
+                                        <input type="hidden" name="_token" data-controller="csrf-protection" value="{{ csrf_token('queue-action') }}">
+                                        <button type="submit" class="{{ a[2] }} btn-small">{{ a[1] }}</button>
+                                    </form>
+                                {% endfor %}
+                                {% if st in ['WAITING', 'CALLED'] and not e.checkedIn %}
+                                    <form method="post" action="{{ path('staff_entry_action', {id: e.id, action: 'check-in'}) }}" class="inline-form">
+                                        <input type="hidden" name="_token" data-controller="csrf-protection" value="{{ csrf_token('queue-action') }}">
+                                        <button type="submit" class="btn-secondary btn-small">Check in</button>
+                                    </form>
+                                {% endif %}
+                                {% if st == 'WAITING' and not e.priority %}
+                                    <a class="btn-secondary btn-small" href="{{ path('staff_mark_priority', {id: e.id}) }}">Priority</a>
+                                {% endif %}
+                                <a class="btn-secondary btn-small" href="{{ path('staff_token_slip', {id: e.id}) }}">Slip</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7" class="py-8 text-center muted-text">No patients yet today.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

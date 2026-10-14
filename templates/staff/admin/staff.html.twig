@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Staff{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Admin</h1>
+    {{ include('staff/admin/_tabs.html.twig') }}
+
+    <div class="mb-4 flex justify-end">
+        <a class="btn-primary btn-small" href="{{ path('admin_staff_new') }}">+ Add staff member</a>
+    </div>
+
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Active</th><th></th></tr></thead>
+            <tbody class="divide-y divide-slate-100">
+                {% for u in users %}
+                    <tr>
+                        <td class="font-semibold">{{ u.name }}{% if u == app.user %} <span class="muted-text">(you)</span>{% endif %}</td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.admin ? 'Admin' : 'Receptionist' }}</td>
+                        <td>{{ u.active ? 'Yes' : 'No' }}</td>
+                        <td><a class="btn-secondary btn-small" href="{{ path('admin_staff_edit', {id: u.id}) }}">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

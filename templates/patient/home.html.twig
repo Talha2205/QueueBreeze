@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Skip the waiting room{% endblock %}
+
+{% block body %}
+    <section class="hero-section">
+        <h1 class="hero-title">Wait from anywhere, not the waiting room.</h1>
+        <p class="hero-subtitle">Get a token for your doctor online, follow the queue live on your phone, and come back when it is almost your turn.</p>
+        <div class="home-inline-actions">
+            <a class="btn-primary" href="{{ path('join') }}">Get a token</a>
+        </div>
+    </section>
+
+    <ol class="steps-list mt-8">
+        <li class="step-item">
+            <span class="step-number">1</span>
+            <h2 class="section-title mb-0">Choose your doctor</h2>
+            <p class="muted-text">See who is serving now and how long the wait is.</p>
+        </li>
+        <li class="step-item">
+            <span class="step-number">2</span>
+            <h2 class="section-title mb-0">Enter your details</h2>
+            <p class="muted-text">Your name and mobile number. We send updates by SMS or WhatsApp.</p>
+        </li>
+        <li class="step-item">
+            <span class="step-number">3</span>
+            <h2 class="section-title mb-0">Track your turn</h2>
+            <p class="muted-text">Your token page updates live and alerts you when you are called.</p>
+        </li>
+    </ol>
+{% endblock %}

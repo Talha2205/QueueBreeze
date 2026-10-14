@@ -1,0 +1,54 @@
+{# Live part of the token page. Re-rendered on every queue change (Mercure or polling). #}
+{% set s = entry.status %}
+<div id="live-status" class="live-status-panel">
+    {% if s.value == 'CALLED' %}
+        <div class="called-banner" data-called-banner>
+            <span>It's your turn!</span>
+            <span class="text-base font-medium">Please go to {{ entry.doctor.name }}'s room now.</span>
+        </div>
+    {% endif %}
+
+    <div class="flex items-center justify-between gap-3">
+        <span class="text-base font-medium text-slate-600">Status</span>
+        <twig:StatusBadge :status="s" />
+    </div>
+
+    <div class="now-serving">
+        <span class="now-serving-label">Now serving</span>
+        <span class="now-serving-token">{{ status.nowServing ?? '—' }}</span>
+    </div>
+
+    {% if s.value == 'WAITING' %}
+        <p class="position-text text-center">
+            {% if status.ahead == 0 %}
+                <span class="position-highlight">You're next</span>
+            {% else %}
+                <span class="position-highlight">{{ status.ahead }}</span> {{ status.ahead == 1 ? 'person' : 'people' }} ahead of you
+            {% endif %}
+        </p>
+        <p class="text-center text-slate-700">Estimated wait: <strong>{{ status.waitText }}</strong></p>
+    {% elseif s.value == 'IN_PROGRESS' %}
+        <p class="position-text text-center">You are with the doctor.</p>
+    {% elseif s.value == 'COMPLETED' %}
+        <p class="position-text text-center">Visit complete. Get well soon!</p>
+    {% elseif s.value == 'SKIPPED' %}
+        <p class="position-text text-center">You missed your call. Please see the front desk to be recalled.</p>
+    {% elseif s.value == 'CANCELLED' %}
+        <p class="position-text text-center">This token was cancelled.</p>
+    {% endif %}
+
+    {% set steps = [['WAITING', 'Waiting'], ['CALLED', 'Called'], ['IN_PROGRESS', 'With doctor'], ['COMPLETED', 'Done']] %}
+    {% set order = {WAITING: 0, CALLED: 1, IN_PROGRESS: 2, COMPLETED: 3} %}
+    {% if order[s.value] is defined %}
+        <ol class="progress-steps">
+            {% for step in steps %}
+                {% set i = order[step[0]] %}
+                <li class="progress-step {{ i == order[s.value] ? 'is-current' : (i < order[s.value] ? 'is-reached') }}">{{ step[1] }}</li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    {% if entry.checkedIn %}
+        <p class="text-center text-emerald-700 font-semibold">✓ Checked in at the clinic</p>
+    {% endif %}
+</div>

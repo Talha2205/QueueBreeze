@@ -1,0 +1,5 @@
+<nav class="admin-tabs" aria-label="Admin">
+    {% for route, label in {admin_doctors: 'Doctors', admin_staff: 'Staff', admin_settings: 'Settings', admin_reports: 'Reports'} %}
+        <a class="nav-link {{ app.current_route starts with route ? 'bg-brand-50 text-brand-900' }}" href="{{ path(route) }}">{{ label }}</a>
+    {% endfor %}
+</nav>

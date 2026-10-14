@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Doctors{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Admin</h1>
+    {{ include('staff/admin/_tabs.html.twig') }}
+
+    <div class="mb-4 flex justify-end">
+        <a class="btn-primary btn-small" href="{{ path('admin_doctor_new') }}">+ Add doctor</a>
+    </div>
+
+    <div class="data-table-wrapper">
+        <table class="data-table">
+            <thead><tr><th>Prefix</th><th>Name</th><th>Specialty</th><th>Avg. consult</th><th>Today</th><th>Active</th><th></th></tr></thead>
+            <tbody class="divide-y divide-slate-100">
+                {% for d in doctors %}
+                    <tr>
+                        <td><span class="doctor-card-prefix">{{ d.tokenPrefix }}</span></td>
+                        <td class="font-semibold">{{ d.name }}</td>
+                        <td>{{ d.specialty }}</td>
+                        <td>{{ d.avgConsultationMinutes }} min</td>
+                        <td>{{ d.availableToday ? 'Accepting' : 'Paused' }}</td>
+                        <td>{{ d.active ? 'Yes' : 'No' }}</td>
+                        <td><a class="btn-secondary btn-small" href="{{ path('admin_doctor_edit', {id: d.id}) }}">Edit</a></td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7" class="py-8 text-center muted-text">No doctors yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Check-in{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" defer></script>
+{% endblock %}
+
+{% block body %}
+    <div class="mx-auto flex max-w-xl flex-col gap-6">
+        <h1 class="page-title mb-0">Patient check-in</h1>
+
+        <div class="card flex flex-col gap-3">
+            <h2 class="section-title mb-0">Scan QR code</h2>
+            <div id="qr-reader" class="scanner-frame min-h-24 p-4 text-center text-white" data-controller="qr-scanner"></div>
+        </div>
+
+        <form method="get" action="{{ path('staff_check_in') }}" class="card">
+            <h2 class="section-title">Or enter the token number</h2>
+            <div class="field">
+                <label class="field-label" for="token">Token</label>
+                <input class="field-input font-mono uppercase" id="token" name="token" value="{{ token }}" placeholder="A004" autocomplete="off" required>
+            </div>
+            <button type="submit" class="btn-primary btn-block">Check in</button>
+        </form>
+    </div>
+{% endblock %}

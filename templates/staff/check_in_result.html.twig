@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Checked in {{ entry.tokenNumber }}{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <div class="mx-auto flex max-w-xl flex-col gap-6">
+        <div class="check-in-result">
+            <div class="flex items-center justify-between gap-3">
+                <p class="token-number">{{ entry.tokenNumber }}</p>
+                <twig:StatusBadge :status="entry.status" />
+            </div>
+            <p class="text-lg"><strong>{{ entry.patientName }}</strong> · {{ entry.doctor.name }}</p>
+            {% if not entry.status.active %}
+                <div class="flash flash-error mb-0">This token is {{ entry.status.label|lower }} and cannot be checked in.</div>
+            {% elseif alreadyCheckedIn %}
+                <div class="flash flash-info mb-0">Already checked in at {{ entry.checkedInAt|date('H:i', app_timezone) }}.</div>
+            {% else %}
+                <div class="flash flash-success mb-0">Checked in. {% if status.position %}{{ status.ahead }} ahead · est. {{ status.waitText }}.{% endif %}</div>
+            {% endif %}
+        </div>
+        <div class="flex flex-wrap gap-3">
+            <a class="btn-primary" href="{{ path('staff_check_in') }}">Check in another</a>
+            <a class="btn-secondary" href="{{ path('staff_doctor_queue', {id: entry.doctor.id}) }}">Open {{ entry.doctor.name }}'s queue</a>
+        </div>
+    </div>
+{% endblock %}

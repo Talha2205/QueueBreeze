@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ priority ? 'Priority patient' : 'Walk-in' }}{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <div class="mx-auto max-w-xl">
+        <a class="nav-link -ml-3 mb-4 inline-block" href="{{ path('staff_doctor_queue', {id: doctor.id}) }}">← Back to {{ doctor.name }}</a>
+        <h1 class="page-title">{{ priority ? 'Add priority patient' : 'Add walk-in' }}</h1>
+        <p class="mb-6 text-slate-700">
+            {{ priority ? 'Priority patients are placed according to the clinic priority rule.' : 'Walk-ins join at the end of the line and are checked in automatically.' }}
+        </p>
+        <div class="card">
+            {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+                {{ form_errors(form) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.channel) }}
+                {% if form.priorityReason is defined %}{{ form_row(form.priorityReason) }}{% endif %}
+                <button type="submit" class="{{ priority ? 'btn-danger' : 'btn-primary' }} btn-block">Issue token</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

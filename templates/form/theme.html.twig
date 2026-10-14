@@ -1,0 +1,51 @@
+{% use 'form_div_layout.html.twig' %}
+
+{% block form_row %}
+    <div class="field">
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </div>
+{% endblock %}
+
+{% block form_label %}
+    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' field-label')|trim}) %}
+    {{- parent() -}}
+{% endblock %}
+
+{% block form_help %}
+    {% if help is not empty %}<p class="field-help">{{ help|trans(help_translation_parameters, translation_domain) }}</p>{% endif %}
+{% endblock %}
+
+{% block form_errors %}
+    {% for error in errors %}<p class="field-error">{{ error.message }}</p>{% endfor %}
+{% endblock %}
+
+{% block form_widget_simple %}
+    {% set attr = attr|merge({class: attr.class|default('field-input')}) %}
+    {{- parent() -}}
+{% endblock %}
+
+{% block choice_widget_collapsed %}
+    {% set attr = attr|merge({class: attr.class|default('field-input')}) %}
+    {{- parent() -}}
+{% endblock %}
+
+{% block choice_widget_expanded %}
+    <div class="channel-toggle" {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+            <label class="channel-option">{{ form_widget(child) }}{{ child.vars.label }}</label>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block checkbox_row %}
+    <div class="field">
+        <label class="flex items-center gap-3 font-semibold text-slate-800">
+            {{ form_widget(form, {attr: {class: 'h-5 w-5 accent-brand-600'}}) }}
+            {{ label is same as(false) ? '' : (label ?: name|humanize) }}
+        </label>
+        {{- form_errors(form) -}}
+    </div>
+{% endblock %}

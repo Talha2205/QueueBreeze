@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Token {{ entry.tokenNumber }}{% endblock %}
+
+{% block body %}
+    <div class="mx-auto flex max-w-xl flex-col gap-6"
+         data-controller="live"
+         data-live-hub-url-value="{{ hubUrl }}"
+         data-live-topics-value="{{ [topic]|json_encode }}"
+         data-live-poll-url-value="{{ path('patient_token_live', {publicId: entry.publicId}) }}">
+
+        <twig:TokenCard token="{{ entry.tokenNumber }}" doctorName="{{ entry.doctor.name }}" />
+
+        {{ include('patient/_status.html.twig') }}
+
+        <p class="save-link-note">Bookmark this page or keep it open. It updates on its own and beeps when you are called.</p>
+
+        {% if entry.status.active and not entry.checkedIn %}
+            <div class="card qr-panel">
+                <h2 class="section-title mb-0">Check in when you arrive</h2>
+                <img class="qr-image" src="{{ path('patient_token_qr', {publicId: entry.publicId}) }}" alt="Check-in QR code for token {{ entry.tokenNumber }}">
+                <p class="muted-text text-center">Show this code at the front desk, or just tell them your token number.</p>
+            </div>
+        {% endif %}
+
+        <dl class="card grid grid-cols-2 gap-3 text-base">
+            <dt class="text-slate-600">Name</dt><dd class="font-semibold">{{ entry.patientName }}</dd>
+            <dt class="text-slate-600">Clinic</dt><dd class="font-semibold">{{ entry.clinic.name }}</dd>
+            {% if entry.patientPhone %}
+                <dt class="text-slate-600">Updates to</dt><dd class="font-semibold">{{ entry.patientPhone|mask_phone }} ({{ entry.notificationChannel.value == 'WHATSAPP' ? 'WhatsApp' : 'SMS' }})</dd>
+            {% endif %}
+            <dt class="text-slate-600">Date</dt><dd class="font-semibold">{{ entry.queueDate|date('D, d M Y') }}</dd>
+        </dl>
+
+        {% if entry.status.queued %}
+            <form method="post" action="{{ path('patient_token_cancel', {publicId: entry.publicId}) }}" onsubmit="return confirm('Cancel your token? You will lose your place in line.')">
+                <input type="hidden" name="_token" value="{{ csrf_token('cancel-token') }}">
+                <button type="submit" class="btn-secondary btn-block">Cancel my token</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

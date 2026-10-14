@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ isNew ? 'Add doctor' : 'Edit ' ~ doctor.name }}{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Admin</h1>
+    {{ include('staff/admin/_tabs.html.twig') }}
+    <div class="mx-auto max-w-xl">
+        <h2 class="section-title">{{ isNew ? 'Add doctor' : 'Edit ' ~ doctor.name }}</h2>
+        <div class="card">
+            {{ form_start(form) }}
+                {{ form_rest(form) }}
+                <div class="flex gap-3">
+                    <button type="submit" class="btn-primary">Save</button>
+                    <a class="btn-secondary" href="{{ path('admin_doctors') }}">Cancel</a>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

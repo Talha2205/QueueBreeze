@@ -1,11 +1,14 @@
 parameters:
     app.timezone: '%env(APP_TIMEZONE)%'
     app.default_uri: '%env(DEFAULT_URI)%'
+    app.mercure_public_url: '%env(default::MERCURE_PUBLIC_URL)%'
 
 services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            string $timezone: '%app.timezone%'
 
     App\:
         resource: '../src/'

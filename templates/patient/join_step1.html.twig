@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choose a doctor{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Choose a doctor</h1>
+
+    {% if clinics|length > 1 %}
+        <nav class="admin-tabs" aria-label="Clinics">
+            {% for c in clinics %}
+                <a class="nav-link {{ c == clinic ? 'bg-brand-50 text-brand-900' }}" href="{{ path('join', {clinic: c.slug}) }}">{{ c.name }}</a>
+            {% endfor %}
+        </nav>
+    {% endif %}
+
+    {% if clinic is null %}
+        <p class="card">No clinic is taking tokens right now.</p>
+    {% else %}
+        <p class="mb-6 text-slate-700"><strong>{{ clinic.name }}</strong>{% if clinic.address %} · {{ clinic.address }}{% endif %}</p>
+
+        {% if doctors is empty %}
+            <p class="card">No doctors are listed for this clinic yet.</p>
+        {% else %}
+            <div class="doctor-card-grid">
+                {% for summary in doctors %}
+                    {% set accepting = summary.doctor.availableToday %}
+                    <div class="flex flex-col gap-3 {{ accepting ? '' : 'doctor-card-closed' }}">
+                        <twig:DoctorCard :summary="summary" />
+                        {% if accepting %}
+                            <a class="btn-primary btn-block" href="{{ path('join_details', {doctor: summary.doctor.id}) }}">Get token for {{ summary.doctor.name }}</a>
+                        {% else %}
+                            <span class="btn-secondary btn-block cursor-not-allowed">Not taking tokens today</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

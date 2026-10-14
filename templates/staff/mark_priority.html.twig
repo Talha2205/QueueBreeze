@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mark priority{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <div class="mx-auto max-w-xl">
+        <a class="nav-link -ml-3 mb-4 inline-block" href="{{ path('staff_doctor_queue', {id: entry.doctor.id}) }}">← Back to {{ entry.doctor.name }}</a>
+        <h1 class="page-title">Mark {{ entry.tokenNumber }} as priority</h1>
+        <p class="mb-6 text-slate-700">{{ entry.patientName }} will move up the queue. The reason is visible to staff only.</p>
+        <div class="card">
+            {{ form_start(form) }}
+                {{ form_row(form.priorityReason) }}
+                <button type="submit" class="btn-danger btn-block">Move up as priority</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

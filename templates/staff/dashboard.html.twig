@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">{{ clinic.name }} · Today</h1>
+
+    {% if doctors is empty %}
+        <p class="card">No active doctors yet.{% if is_granted('ROLE_ADMIN') %} <a class="text-brand-700 underline" href="{{ path('admin_doctor_new') }}">Add a doctor</a>.{% endif %}</p>
+    {% endif %}
+
+    <div class="staff-cards-grid">
+        {% for summary in doctors %}
+            {% set doctor = summary.doctor %}
+            <div class="flex flex-col gap-3 {{ doctor.availableToday ? '' : 'doctor-card-closed' }}">
+                <twig:DoctorCard :summary="summary" />
+                <div class="doctor-card-actions">
+                    <a class="btn-primary btn-small" href="{{ path('staff_doctor_queue', {id: doctor.id}) }}">Open queue</a>
+                    <form method="post" action="{{ path('staff_doctor_availability', {id: doctor.id}) }}" class="inline-form">
+                        <input type="hidden" name="_token" value="{{ csrf_token('availability-' ~ doctor.id) }}">
+                        <button class="btn-secondary btn-small" type="submit">
+                            {{ doctor.availableToday ? 'Stop online tokens' : 'Resume online tokens' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

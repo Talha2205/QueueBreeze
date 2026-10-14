@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Slip {{ entry.tokenNumber }}{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col items-center gap-6" data-controller="print">
+        <div class="token-slip">
+            <p class="font-semibold">{{ entry.clinic.name }}</p>
+            <p class="text-sm">{{ entry.doctor.name }}</p>
+            <p class="token-slip-token">{{ entry.tokenNumber }}</p>
+            <p>{{ entry.patientName }}</p>
+            {% if status.position %}<p class="text-sm">{{ status.ahead }} ahead · est. {{ status.waitText }}</p>{% endif %}
+            <img class="h-32 w-32" src="{{ path('patient_token_qr', {publicId: entry.publicId}) }}" alt="">
+            <p class="text-xs">Track live: {{ url('patient_token', {publicId: entry.publicId}) }}</p>
+            <p class="text-xs">{{ entry.joinedAt|date('d M Y H:i', app_timezone) }}</p>
+        </div>
+        <div class="no-print flex flex-wrap gap-3">
+            <button type="button" class="btn-primary" data-action="print#print">Print slip</button>
+            <a class="btn-secondary" href="{{ path('patient_token', {publicId: entry.publicId}) }}" target="_blank">Open patient page</a>
+            <a class="btn-secondary" href="{{ path('staff_doctor_queue', {id: entry.doctor.id}) }}">Back to queue</a>
+        </div>
+    </div>
+{% endblock %}

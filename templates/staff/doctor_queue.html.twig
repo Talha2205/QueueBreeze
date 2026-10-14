@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ doctor.name }} · Queue{% endblock %}
+{% block body_class %}staff-page{% endblock %}
+
+{% block body %}
+    <div data-controller="live"
+         data-live-hub-url-value="{{ hubUrl }}"
+         data-live-topics-value="{{ [topic]|json_encode }}"
+         data-live-poll-url-value="{{ path('staff_doctor_live', {id: doctor.id}) }}"
+         data-live-secure-value="true">
+
+        <div class="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+            <h1 class="page-title mb-0">{{ doctor.name }} <span class="text-lg font-medium text-slate-500">{{ doctor.specialty }} · prefix {{ doctor.tokenPrefix }}</span></h1>
+            <a class="nav-link" href="{{ path('staff_dashboard') }}">← All doctors</a>
+        </div>
+
+        <div class="queue-toolbar">
+            <form method="post" action="{{ path('staff_call_next', {id: doctor.id}) }}" class="inline-form">
+                <input type="hidden" name="_token" value="{{ csrf_token('call-next-' ~ doctor.id) }}">
+                <button type="submit" class="btn-primary call-next-button">Call next patient</button>
+            </form>
+            <a class="btn-secondary" href="{{ path('staff_walk_in', {id: doctor.id}) }}">+ Walk-in</a>
+            <a class="btn-danger" href="{{ path('staff_walk_in', {id: doctor.id, priority: 1}) }}">+ Priority patient</a>
+        </div>
+
+        {{ include('staff/_queue_panel.html.twig') }}
+    </div>
+{% endblock %}
